@@ -1,3 +1,8 @@
+from streamlit_autorefresh import st_autorefresh
+
+# Auto refresh every 5 seconds
+st_autorefresh(interval=5000, key="refresh")
+
 import streamlit as st
 import requests
 import pandas as pd
