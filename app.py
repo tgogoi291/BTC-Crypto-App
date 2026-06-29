@@ -22,9 +22,14 @@ col1, col2 = st.columns(2)
 
 for i, (symbol, coin) in enumerate(coins.items()):
     url = f"https://api.coingecko.com/api/v3/simple/price?ids={coin}&vs_currencies=usd"
-    data = requests.get(url).json()
-    price = data[coin]["usd"]
+    response = requests.get(url)
+data = response.json()
 
+if coin in data and "usd" in data[coin]:
+    price = data[coin]["usd"]
+    st.metric(symbol, f"${price:,.2f}")
+else:
+    st.error(f"{symbol} price not available")
     if i % 2 == 0:
         with col1:
             st.metric(symbol, f"${price:,.2f}")
