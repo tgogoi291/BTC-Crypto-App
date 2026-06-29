@@ -2,8 +2,8 @@ from streamlit_autorefresh import st_autorefresh
 import streamlit as st
 import requests
 
-# Auto refresh every 10 seconds
-st_autorefresh(interval=10000, key="refresh")
+# Auto refresh every 5 seconds
+st_autorefresh(interval=5000, key="refresh")
 
 st.set_page_config(page_title="BTC & Crypto App", layout="wide")
 
