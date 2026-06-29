@@ -2,45 +2,33 @@ import streamlit as st
 import requests
 import pandas as pd
 
-st.set_page_config(page_title="Nifty + Sensex + BTC Dashboard", layout="wide")
+st.set_page_config(page_title="BTC & Crypto App", layout="wide")
 
-st.title("📈 Nifty + Sensex + BTC Dashboard")
+st.title("📈 Market Watch")
 
-coin = st.selectbox(
-    "Select Crypto",
-    ["bitcoin", "ethereum", "solana", "dogecoin"]
-)
+coins = {
+    "BTCUSD": "bitcoin",
+    "ETHUSD": "ethereum",
+    "SOLUSD": "solana"
+}
 
-url = f"https://api.coingecko.com/api/v3/simple/price?ids={coin}&vs_currencies=usd,inr"
+col1, col2 = st.columns(2)
 
-try:
+for i, (symbol, coin) in enumerate(coins.items()):
+    url = f"https://api.coingecko.com/api/v3/simple/price?ids={coin}&vs_currencies=usd"
     data = requests.get(url).json()
+    price = data[coin]["usd"]
 
-    usd = data[coin]["usd"]
-    inr = data[coin]["inr"]
+    if i % 2 == 0:
+        with col1:
+            st.metric(symbol, f"${price:,.2f}")
+    else:
+        with col2:
+            st.metric(symbol, f"${price:,.2f}")
 
-    col1, col2 = st.columns(2)
+st.markdown("---")
 
-    with col1:
-        st.metric("USD Price", f"${usd:,.2f}")
+st.subheader("Other Markets")
 
-    with col2:
-        st.metric("INR Price", f"₹{inr:,.2f}")
-
-    st.success("🟢 BUY Signal (Demo)")
-    st.info("Target: +2%")
-    st.error("Stop Loss: -1%")
-
-except:
-    st.error("Unable to fetch live price.")
-
-st.divider()
-
-st.subheader("📊 Market Watch")
-
-market = pd.DataFrame({
-    "Index": ["NIFTY 50", "SENSEX", "BANK NIFTY"],
-    "Signal": ["BUY", "SELL", "BUY"]
-})
-
-st.dataframe(market, use_container_width=True)
+st.info("🥇 XAUTUSD (Gold): Coming Soon")
+st.info("💎 VELVETUSD: Coming Soon")
